@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Game Tỏ Tình 💍</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial;
+    background: linear-gradient(135deg, #ffe0f0, #ffe9d6);
+}
+
+/* nền trái tim */
+.heart {
+    position: absolute;
+    color: #ff4d88;
+    animation: float 6s linear infinite;
+    font-size: 20px;
+}
+
+@keyframes float {
+    0% {transform: translateY(100vh); opacity: 0;}
+    10% {opacity: 1;}
+    100% {transform: translateY(-10vh); opacity: 0;}
+}
+
+h1 {
+    text-align: center;
+    color: #ff2f75;
+    margin-top: 60px;
+}
+
+.btn {
+    padding: 15px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    position: absolute;
+}
+
+#yesBtn {
+    background: #ff4d88;
+    color: white;
+    left: 40%;
+    top: 60%;
+}
+
+#noBtn {
+    background: #333;
+    color: white;
+    left: 55%;
+    top: 60%;
+}
+
+#result {
+    display: none;
+    text-align: center;
+    padding: 20px;
+    color: #d1004b;
+    position: relative;
+    top: 20%;
+}
+
+#ring {
+    width: 160px;
+    margin-top: 20px;
+    filter: drop-shadow(0 0 10px pink);
+}
+
+/* pháo hoa */
+.firework {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: red;
+    animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+    from {transform: scale(1); opacity: 1;}
+    to {transform: scale(20); opacity: 0;}
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="title">Anh hỏi em một câu nhé 💖<br>Em có đồng ý làm vợ anh không?</h1>
+
+<button id="yesBtn">Đồng ý 💍</button>
+<button id="noBtn">Không đồng ý ❌</button>
+
+<div id="result">
+    <h2 id="text"></h2>
+    <p id="letter"></p>
+
+    <img id="ring" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Engagement_ring_icon.png"/>
+    <audio id="music" src="'một đời' - 14 casper & bon nghiêm (feat (mp3cut.net).mp3"></audio>
+</div>
+
+<script>
+
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const result = document.getElementById("result");
+const music = document.getElementById("music");
+const title = document.getElementById("title");
+const text = document.getElementById("text");
+const letter = document.getElementById("letter");
+
+/* ❤️ trái tim bay */
+function createHeart() {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = "❤️";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.fontSize = Math.random() * 20 + 10 + "px";
+    h.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 6000);
+}
+setInterval(createHeart, 300);
+
+/* ❌ nút không chạy trốn thông minh */
+noBtn.addEventListener("click", () => {
+    const padding = 20;
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
+
+/* 💍 đồng ý */
+yesBtn.addEventListener("click", () => {
+
+    title.style.display = "none";
+    yesBtn.style.display = "none";
+    noBtn.style.display = "none";
+    result.style.display = "block";
+
+    music.play().catch(()=>{});
+
+    text.innerHTML = "💖 Anh yêu em 💖";
+
+    const msg = `Từ ngày gặp em, anh biết trái tim mình đã thuộc về em.
+Anh không cần cả thế giới, chỉ cần em ở đây.
+
+Dù tương lai có ra sao, anh vẫn sẽ nắm tay em.
+Một đời này… anh chỉ yêu mình em 💍`;
+
+    let i = 0;
+    function typeWriter() {
+        if (i < msg.length) {
+            letter.innerHTML += msg.charAt(i);
+            i++;
+            setTimeout(typeWriter, 40);
+        }
+    }
+    typeWriter();
+
+    spawnFireworks();
+});
+
+/* 💥 pháo hoa */
+function spawnFireworks() {
+    for (let i = 0; i < 40; i++) {
+        const f = document.createElement("div");
+        f.className = "firework";
+        f.style.left = Math.random() * window.innerWidth + "px";
+        f.style.top = Math.random() * window.innerHeight + "px";
+        f.style.background = `hsl(${Math.random()*360},100%,60%)`;
+        document.body.appendChild(f);
+
+        setTimeout(() => f.remove(), 1000);
+    }
+}
+
+</script>
+
+</body>
+</html>
